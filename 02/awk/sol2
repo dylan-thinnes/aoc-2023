@@ -1,2 +1,9 @@
 #!/usr/bin/env -S awk -f
-BEGIN{RS="([:,;] |\n)"}/Game/{total+=red*blue*green;red=0;blue=0;green=0}/red/&&$1>red{red=$1}/green/&&$1>green{green=$1}/blue/&&$1>blue{blue=$1}END{total+=red*blue*green;print total}
+BEGIN                 { RS="([:,;] |\n)" }
+/Game/                { total += red * blue * green
+                      ; red = 0; blue = 0; green = 0 }
+/red/   && $1 > red   { red=$1 }
+/green/ && $1 > green { green=$1 }
+/blue/  && $1 > blue  { blue=$1 }
+END                   { total += red * blue * green
+                      ; print total }
