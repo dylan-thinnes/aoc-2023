@@ -1,8 +1,8 @@
 #!/bin/bash
-DAT=$(find . -mindepth 2 -maxdepth 2 -type d | grep -E '^./[[:digit:]]+/')
-MAX_DAY=$(echo "$DAT" | cut -d'/' -f2 | sort -nr | head -n1)
+DAT=$(git ls-files | cut -d/ -f1-2 | grep -E '^[[:digit:]]+/.+' | sort | uniq | while read line; do if [[ -d "$line" ]]; then echo "$line"; fi; done)
+MAX_DAY=$(echo "$DAT" | cut -d'/' -f1 | sort -nr | head -n1)
 MAX_DAY=${MAX_DAY##0}
-LANGS=$(echo "$DAT" | cut -d'/' -f3 | sort | uniq | grep -v utils)
+LANGS=$(echo "$DAT" | cut -d'/' -f2 | sort | uniq | grep -v utils)
 LONGEST_LANG=$(echo "$LANGS" | awk '{print length}' | sort -nr | head -n1)
 
 printf "%-${LONGEST_LANG}s                   |1|1|1|1|1|1|1|1|1|1|2|2|2|2|2|2|" "" | head -c$((LONGEST_LANG + MAX_DAY*2 + 2))
