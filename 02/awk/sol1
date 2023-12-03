@@ -1,2 +1,2 @@
 #!/usr/bin/env -S awk -f
-EGIN{RS="([:,;] |\n)"}/Game/{game=$2;games[game]=1}/red/&&$1>12||/green/&&$1>13||/blue/&&$1>14{delete games[game]}END{for (key in games) total += key;print total}
+BEGIN{RS="([:,;] |\n)"}/Game/{game=$2;games[game]=1}/red/&&$1>12||/green/&&$1>13||/blue/&&$1>14{delete games[game]}END{for (key in games) total += key;print total}
