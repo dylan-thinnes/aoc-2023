@@ -28,9 +28,11 @@ day in a different language.
 Languages and solutions so far can be got by running `./summarize`.
 
 ```
-       
-    |1|
-sed |█|
+           
+    |1|2|3|
+awk | |█| |
+j   | | |█|
+sed |█| | |
 ```
 
 In my summaries, I will go over the solutions I find more interesting, rather
