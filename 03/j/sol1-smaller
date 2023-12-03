@@ -1,0 +1,6 @@
+#!/usr/bin/env jconsole
+padded =: '.' ,.~ '.' ,. '.' ,~ '.' , ([;._2~ LF = ]) 1!:1 <'input'
+numbers =: '0123456789' e.~ padded
+number_regions =: (#~ 2 | 1 + [: i. #) (, padded) <;.1~ , (~: _1 |."1 ]) (numbers *. [: |: [: +./ _1 0 1 |."0 2 |:)^:_ numbers *. +./ (<: 3 3 #: i. 9) |. -. '0123456789.' e.~ padded
+4 (1!:2)~ ": +/ ".@:>"0 number_regions
+exit 0
