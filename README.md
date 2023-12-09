@@ -28,11 +28,14 @@ day in a different language.
 Languages and solutions so far can be got by running `./summarize`.
 
 ```
-           
-    |1|2|3|
-awk | |█| |
-j   | | |█|
-sed |█| | |
+                   
+          |1|2|3|4|
+awk       | |█| | |
+brainfuck | | | | |
+haskell   | | | | |
+j         | | |█| |
+sed       |█| | | |
+vim       | | | |█|
 ```
 
 In my summaries, I will go over the solutions I find more interesting, rather
