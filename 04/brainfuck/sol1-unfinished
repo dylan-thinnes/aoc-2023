@@ -1,0 +1,38 @@
+Leave everything before "Card #: "
+,,,,,,,,
+
+Make room for test number
+>>>>
+
+Load five winning numbers
+with room for delta
+,>,> >,
+,>,> >,
+,>,> >,
+,>,> >,
+,>,> >,
+
+Drop "| "
+,,
+
+Print for sanity
+<<<   <<<   <<<   <<<   <<<   
+.>.>> .>.>> .>.>> .>.>> .>.>> 
+<<<   <<<   <<<   <<<   <<<   
+
+Load first test number
+<<<<
+,.>,.<
+
+[->>+
+  >>->>>->>>->>>->>>-
+  << <<< <<< <<< <<<
+<<]
+
+>[->>+
+  >>->>>->>>->>>->>>-
+  << <<< <<< <<< <<<
+<<]<
+
+>>[-<<+>>]
+ >[-<<+>>]
