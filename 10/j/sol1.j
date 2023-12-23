@@ -1,6 +1,6 @@
 #!/usr/bin/env jconsole
 NB. Parse input into a padded array of characters
-input =: 1!:1 <'input'
+input =: 1!:1 <'example-input-3'
 divided =: ([;._2~ LF = ]) input
 padded =: '.' ,.~ '.' ,. '.' ,~ '.' , divided
 
@@ -25,6 +25,7 @@ glob_adjacent_pipes =: ] +. (left *. 0 _1 |. ]) +. (right *. 0 1 |. ]) +. (up *.
 
 NB. Run adjacency an infinite number of times (stops on fixpoint)
 globbed_pipes =: glob_adjacent_pipes^:_ s
+result =: globbed_pipes {"0 1 '.' ,"0 padded
 
 NB. Calculate total number of globbed_pipes by summing the matrix
 total =: +/ +/ globbed_pipes
