@@ -1,30 +1,32 @@
-NB. Receive input
+NB. Receive input, pad with walls
 input =: 1!:1 < 'input'
 split =: ([;._2~ LF = ]) input
-field =: split
+field =: '#' ,~"1]: '#' ,"1]: '#' ,~ '#' , split
 
 NB. Extract unmoving and moving rocks
 square =: '#' = field
 round =: 'O' = field
 render =: '.#OX' {~ square + 2 * ]
 
-NB. Boundaries for boulders rolling n,s,w,e
-boundaries_w =: }:"1]: 1 ,"1 square
-boundaries_e =: }."1]: 1 ,~"1 square
-boundaries_n =: }:"1]: 1 ,"1 |: square
-boundaries_s =: }."1]: 1 ,~"1 |: square
+NB. Roll west along one dimension
+roll =: [: ; [: \:~&.> <;.2
 
-NB. Roll using boundaries
-roll_w =: [: ;"1 [: \:~&.> boundaries_w <;.1"1 ]
-roll_e =: [: ;"1 [: /:~&.> boundaries_e <;.2"1 ]
-roll_n =: [: |: [: ;"1 [: \:~&.> boundaries_n <;.1"1 |:@:]
-roll_s =: [: |: [: ;"1 [: /:~&.> boundaries_s <;.2"1 |:@:]
+NB. Roll w,e,n,s on 2D
+roll_w =: roll"1
+roll_e =: roll&.|."1
+roll_n =: roll"1&.|:
+roll_s =: roll&.|."1&.|:
 
-NB. Cycle by running rolling
-cycle =: roll_e @: roll_s @: roll_w @: roll_n
-cost =: [: +/ [: (* >:@:|.@:i.@:#) +/"1
+NB. Cycle by running all four rolls
+cycle =: square roll_e square roll_s square roll_w square roll_n ]
 
+NB. Calculate cost by multiplying by column vector of descending indices (n, n-1, ..., 1)
+cost =: [: +/ [: (* |.@:i.@:#) +/"1
+
+NB. Iterate until a previous state is seen
 steady_state =: cycle^:1000 round
+
+NB. Calculate cost of positions
 cost_history =: |. cost"2 > (cycle@:>@:{. ; ])^:1000 < steady_state
 
 periodic_mask_n =: 0 = (| [: i. #)
