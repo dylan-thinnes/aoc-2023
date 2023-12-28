@@ -1,30 +1,31 @@
 NB. Receive input
 input =: 1!:1 < 'input'
 split =: ([;._2~ LF = ]) input
-field =: |: split
+field =: split
 
 NB. Extract unmoving and moving rocks
 square =: '#' = field
 round =: 'O' = field
+render =: '.#OX' {~ square + 2 * ]
 
 NB. Boundaries for boulders rolling n,s,w,e
-boundaries_n =: [: }:"1]: 1 ,"1 square +. ]
-boundaries_s =: [: }."1]: 1 ,~"1 square +. ]
-boundaries_w =: [: }:"1]: 1 ,"1 [: |: square +. ]
-boundaries_e =: [: }."1]: 1 ,~"1 [: |: square +. ]
+boundaries_w =: }:"1]: 1 ,"1 square
+boundaries_e =: }."1]: 1 ,~"1 square
+boundaries_n =: }:"1]: 1 ,"1 |: square
+boundaries_s =: }."1]: 1 ,~"1 |: square
 
 NB. Roll using boundaries
-roll_n =: [: ;"1 [: \:~&.> boundaries_n@:[ <;.1"1 ]
-roll_s =: [: ;"1 [: /:~&.> boundaries_s@:[ <;.2"1 ]
-roll_w =: [: |: [: ;"1 [: \:~&.> boundaries_w@:[ <;.1"1 |:@:]
-roll_e =: [: |: [: ;"1 [: /:~&.> boundaries_e@:[ <;.2"1 |:@:]
+roll_w =: [: ;"1 [: \:~&.> boundaries_w <;.1"1 ]
+roll_e =: [: ;"1 [: /:~&.> boundaries_e <;.2"1 ]
+roll_n =: [: |: [: ;"1 [: \:~&.> boundaries_n <;.1"1 |:@:]
+roll_s =: [: |: [: ;"1 [: /:~&.> boundaries_s <;.2"1 |:@:]
 
 NB. Cycle by running rolling
-cycle =: [ roll_e [ roll_s [ roll_w roll_n
+cycle =: roll_e @: roll_s @: roll_w @: roll_n
+cost =: [: +/ [: (* >:@:|.@:i.@:#) +/"1
 
-steady_state =: square cycle^:1000 round
-cost =: [: +/ [: (* >:@:|.@:i.@:#) +/
-cost_history =: |. cost"2 > (square&cycle@:>@:{. ; ])^:1000 < steady_state
+steady_state =: cycle^:1000 round
+cost_history =: |. cost"2 > (cycle@:>@:{. ; ])^:1000 < steady_state
 
 periodic_mask_n =: 0 = (| [: i. #)
 periodic_xs =: ] #~ periodic_mask_n
