@@ -20,28 +20,26 @@ roll_s =: roll&.|."1&.|:
 NB. Cycle by running all four rolls
 cycle =: square roll_e square roll_s square roll_w square roll_n ]
 
-NB. Calculate cost by multiplying by column vector of descending indices (n, n-1, ..., 1)
+NB. Calculate cost by multiplying by column vector of descending indices
+NB. e.g. (n, n-1, ..., 1)
 cost =: [: +/ [: (* |.@:i.@:#) +/"1
 
-NB. Iterate until a previous state is seen
-steady_state =: cycle^:1000 round
+NB. Utils to iterate until a previous state is seen
+list_head_isnt_duplicate =: [: -. {. e. }.
+attach_new_cycle =: cycle@:>@:{. ; ]
+until_cycle_loops =: attach_new_cycle^:list_head_isnt_duplicate^:_
 
-NB. Calculate cost of positions
-cost_history =: |. cost"2 > (cycle@:>@:{. ; ])^:1000 < steady_state
+NB. Enumerate all states until a previous state is seen
+loop =: until_cycle_loops < round
 
-periodic_mask_n =: 0 = (| [: i. #)
-periodic_xs =: ] #~ periodic_mask_n
-is_monotonic =: 1 = [: # [: ~. }. - }:
-find_period_size =: 3 : 0
-for_i. >: i. # y do.
-  result =: i
-  if. is_monotonic i periodic_xs y do.
-    break.
-  end.
-end.
-result
-)
+NB. Figure out where loop starts
+loop_start_index =: >: (}. i. {.) loop
 
-extrapolate_history_to_billion =: {~ (1000000000 - 1000) | find_period_size
-4 (1!:2)~ LF ,~ ": extrapolate_history_to_billion cost_history
+NB. Using loop start index, figure out the billionth_state if this loop ran
+NB. on forever
+billionth_loop_index =: loop_start_index | <: - 1000000000 + loop_start_index - # loop
+billionth_state =: billionth_loop_index { loop
+
+NB. Print cost of billionth_state
+4 (1!:2)~ LF ,~ ": cost > billionth_state
 exit 0
